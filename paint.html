@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Paint</title>
+	<link rel="stylesheet" type="text/css" href="paint.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+	<script type="text/javascript" src="paper-full.js"></script>
+	<script type="text/paperscript" canvas="myCanvas">
+		var color = new Color(1, 0, 0);
+		var size = 50;
+		var path = new Path({
+				segments: [],
+				strokeColor: color,
+				closed: false,
+				strokeWidth: size,
+				strokeCap: 'round'
+			});
+
+		function onMouseMove(event) {
+		
+			path.add(new Point(event.point.x, event.point.y));
+			path.smooth();
+		}
+
+		function onFrame(event){
+			color.hue += .2;
+			path.strokeColor = color;
+			path.strokeWidth = size;
+		}
+
+		function onKeyDown(event){
+			console.log(event.key);
+			if(event.key === "space"){
+				
+				paper.project.clear();
+				path = new Path({
+					segments: [],
+					strokeColor: color,
+					closed: false,
+					strokeWidth: size,
+					strokeCap: 'round'
+				});
+			}
+			if(event.key === "r"){
+				color = new Color(1, 0, 0);
+			}
+			if(event.key === "g"){
+				color = new Color(0, 1, 0);
+			}
+			if(event.key === "b"){
+				color = new Color(0, 0, 1);
+			}
+			if(event.key === "y"){
+				color = new Color(1, 1, 0);
+			}
+			if(event.key === "up"){
+				size = size + 10;
+			}
+			if(event.key === "down"){
+				if(size > 10){
+				size  = size - 10;
+				}
+			} 
+			
+		}
+	</script>
+</head>
+<body>
+	<canvas id="myCanvas" resize></canvas>
+	<div class="container text-center">
+		<div class="row">
+			<div class="col-lg-12">
+				<h2>Spacebar:delete r:red g:green b:blue y:yellow up-arrow:larger down-arrow: smaller</h2>
+			</div>
+		</div>
+		
+	</div>
+	
+
+</body>
+</html>
